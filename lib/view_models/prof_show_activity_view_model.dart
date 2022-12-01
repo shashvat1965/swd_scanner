@@ -4,7 +4,8 @@ import '../repo/models/prof_show_list.dart';
 import '../repo/retrofit/prof_show_list_call.dart';
 
 class ProfShows {
-  Future<Map<String, int>> getMapOfShows(String jwt) async {
+  Future<List<dynamic>> getDetailsOfShows(String jwt) async {
+    Map<int, int> passwordMap = {};
     Map<String, int> tempMap = {};
     final dio = Dio();
     final client = RestClient(dio);
@@ -12,6 +13,10 @@ class ProfShows {
     for (int i = 0; i < showsData.shows!.length; i++) {
       tempMap[showsData.shows![i].name!] = showsData.shows![i].id!;
     }
-    return tempMap;
+    for (int i = 0; i < showsData.shows!.length; i++) {
+      passwordMap[showsData.shows![i].id!] =
+          int.parse(showsData.shows![i].event_code!);
+    }
+    return [tempMap, passwordMap];
   }
 }

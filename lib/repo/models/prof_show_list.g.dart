@@ -22,12 +22,14 @@ Map<String, dynamic> _$ShowsDataToJson(ShowsData instance) => <String, dynamic>{
 
 TicketData _$TicketDataFromJson(Map<String, dynamic> json) => TicketData(
       id: json['id'] as int?,
+      event_code: json['event_code'] as String?,
       name: json['name'] as String?,
     );
 
 Map<String, dynamic> _$TicketDataToJson(TicketData instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'event_code': instance.event_code,
       'name': instance.name,
     };
 

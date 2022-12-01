@@ -21,10 +21,12 @@ class ShowsData {
 @JsonSerializable()
 class TicketData {
   int? id;
+  String? event_code;
   String? name;
 
   TicketData({
     this.id,
+    this.event_code,
     this.name,
   });
 
