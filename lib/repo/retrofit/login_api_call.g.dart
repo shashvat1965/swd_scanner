@@ -13,7 +13,7 @@ class _RestClient implements RestClient {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://bits-dvm.org/raf/ticket/';
+    baseUrl ??= 'https://bits-dvm.org/raf/ticket';
   }
 
   final Dio _dio;
@@ -35,7 +35,7 @@ class _RestClient implements RestClient {
     )
             .compose(
               _dio.options,
-              'login',
+              '/login',
               queryParameters: queryParameters,
               data: _data,
             )

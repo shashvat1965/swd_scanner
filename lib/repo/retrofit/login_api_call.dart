@@ -10,6 +10,6 @@ part 'login_api_call.g.dart';
 abstract class RestClient {
   factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
 
-  @POST("login")
+  @POST("/login")
   Future<JWTResponse> getJWT(@Body() LoginPostRequest loginPostRequest);
 }

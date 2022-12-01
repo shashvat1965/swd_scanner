@@ -10,7 +10,7 @@ part 'scan_call.g.dart';
 abstract class RestClient {
   factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
 
-  @POST("/tickets-manager/scan")
+  @POST("/scan")
   Future<ScanResponseOnNoError> scanQr(
     @Header("Authorization") String jwt,
     @Body() ScanPostRequest body,

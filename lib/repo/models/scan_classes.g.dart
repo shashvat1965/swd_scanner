@@ -11,12 +11,13 @@ ScanPostRequest _$ScanPostRequestFromJson(Map<String, dynamic> json) =>
       qr_code: json['qr_code'] as String?,
       show_id: json['show_id'] as int?,
       quantity: json['quantity'] as String?,
-    );
+    )..signature = json['signature'] as String?;
 
 Map<String, dynamic> _$ScanPostRequestToJson(ScanPostRequest instance) =>
     <String, dynamic>{
       'qr_code': instance.qr_code,
       'show_id': instance.show_id,
+      'signature': instance.signature,
       'quantity': instance.quantity,
     };
 

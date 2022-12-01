@@ -6,7 +6,6 @@ part 'scan_classes.g.dart';
 class ScanPostRequest {
   ScanPostRequest({
     this.qr_code,
-    this.signature,
     this.show_id,
     this.quantity,
   });

@@ -1,12 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:fast_rsa/fast_rsa.dart';
-import 'package:pointycastle/asymmetric/api.dart';
-import 'package:encrypt/encrypt.dart' as enc;
-import 'package:encrypt/encrypt_io.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swd_scanner/views/scan_times_view.dart';
@@ -27,11 +22,12 @@ class ScanningView extends StatefulWidget {
 
 class _ScanningViewState extends State<ScanningView> {
   int strength = 1;
+  bool isLoading = false;
   QRViewController? controller;
   bool flashOn = false;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
-  @override // this is for the qr code to work with hot reload
+  @override
   void reassemble() {
     super.reassemble();
     if (Platform.isAndroid) {
@@ -92,9 +88,11 @@ class _ScanningViewState extends State<ScanningView> {
               height: 50,
               width: ScreenSize.screenWidth,
               alignment: Alignment.center,
-              child: const Text(
-                "Select the number of people entering",
-                style: TextStyle(
+              child: Text(
+                isLoading
+                    ? "Loading.."
+                    : "Select the number of people entering",
+                style: const TextStyle(
                     fontSize: 20,
                     color: Colors.white,
                     fontWeight: FontWeight.bold),
@@ -168,55 +166,23 @@ class _ScanningViewState extends State<ScanningView> {
   void _onQRViewCreated(QRViewController controller) {
     setState(() {
       this.controller = controller;
+      controller.pauseCamera();
+      controller.resumeCamera();
     });
     controller.scannedDataStream.listen((scanData) async {
       controller.pauseCamera();
+      setState(() {
+        isLoading = true;
+      });
       String qrCode = scanData.code!;
       qrCode = qrCode.replaceAll('\'', "\"");
       Map<dynamic, dynamic> qrcodeJson = json.decode(qrCode);
-      print(qrcodeJson);
-
-      // final publicKey =
-      //     await parseKeyFromFile<RSAPublicKey>('keys/publicKey_back.pem');
-      // final privateKey =
-      //     await parseKeyFromFile<RSAPrivateKey>('keys/privateKey_app.pem');
-      // final signer = enc.Signer(enc.RSASigner(enc.RSASignDigest.SHA256,
-      //     publicKey: publicKey, privateKey: privateKey));
-      // enc.Encrypter encrypter = enc.Encrypter(enc.RSA(
-      //     privateKey: privateKey,
-      //     publicKey: publicKey,
-      //     encoding: enc.RSAEncoding.PKCS1));
-
-      //decoding signature and qrcode using Base64
-      // Codec<String, String> stringToBase64 = utf8.fuse(base64);
-      // String decodedQr = String.fromCharCodes(base64Decode(qrcodeJson['qr_code']));
-      // String decodedSig = String.fromCharCodes(base64Decode(qrcodeJson['signature']));
-      //
-      // //decrypting qrcode using RSA and verifying the signature
-      // String decryptedQr = await RSA.decryptPKCS1v15(decodedQr, dotenv.env["PRIVATE_KEY"]!);
-      // bool isVerified = await RSA.verifyPKCS1v15(decodedSig, decryptedQr, Hash.SHA256, dotenv.env["PUBLIC_KEY"]!);
-      // String decryptedQr = encrypter.decrypt64(qrcodeJson['qr_code']);
-      // bool isVerified = signer.verify64(decryptedQr, qrcodeJson['signature']);
-
-
-
-      // encrypting the qrcode using RSA and creating a new signature
-      // String newSig = await RSA.signPKCS1v15(decryptedQr, Hash.SHA256, dotenv.env["PRIVATE_KEY"]!);
-      // String encodedSig = stringToBase64.encode(newSig);
-      // String encryptedQr = await RSA.encryptPKCS1v15(decryptedQr, dotenv.env["PUBLIC_KEY"]!);
-      // String encodedQr = stringToBase64.encode(encryptedQr);
-      // String encryptedQrCode =
-      //     String.fromCharCodes(encrypter.encrypt(decryptedQr).bytes);
-      // String encodedNewSignature =
-      //     String.fromCharCodes(signer.sign(encryptedQrCode).bytes);
-      // String encodedQrCode = encrypter.encrypt(decryptedQr).base64;
-
       final prefs = await SharedPreferences.getInstance();
       String? jwt = prefs.getString('JWT');
       ScanResponseOnNoError scanResponse;
       try {
-        scanResponse = await ScanViewModel().getScan(jwt!, encodedQr,
-            widget.showId, strength.toString(), encodedSig);
+        scanResponse = await ScanViewModel()
+            .getScan(jwt!, qrcodeJson["qr_code"], 1, strength.toString());
         print(scanResponse.display_message);
         if (scanResponse.scan_code == 0) {
           if (!mounted) return;
@@ -280,8 +246,7 @@ class _ScanningViewState extends State<ScanningView> {
                 context: context,
                 builder: (context) {
                   return AlertDialog(
-                    content:
-                        Text(e.response!.data['display_message'].toString()),
+                    content: const Text("Not enough tickets"),
                     actions: [
                       ElevatedButton(
                           onPressed: () {
@@ -338,6 +303,9 @@ class _ScanningViewState extends State<ScanningView> {
               });
         }
       }
+      setState(() {
+        isLoading = false;
+      });
     });
   }
 
