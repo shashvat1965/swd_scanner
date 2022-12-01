@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swd_scanner/views/scan_times_view.dart';
 import '../repo/models/scan_classes.dart';
 import '../util.dart';
+import 'package:fast_rsa/fast_rsa.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:rsa_encrypt/rsa_encrypt.dart';
 import '../view_models/scanning_screen_view_model.dart';
@@ -37,6 +39,7 @@ class _ScanningViewState extends State<ScanningView> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenSize().initializeSizes(context);
     print("showid : ${widget.showId}");
     return Scaffold(
       body: Stack(
@@ -165,7 +168,8 @@ class _ScanningViewState extends State<ScanningView> {
     });
     controller.scannedDataStream.listen((scanData) async {
       controller.pauseCamera();
-      var qrCode = scanData.code!;
+      String qrCode = scanData.code!;
+      String decryptedData = await RSA.decryptPKCS1v15(qrCode, dotenv.env['PRIVATE_KEY']!);
       final prefs = await SharedPreferences.getInstance();
       String? jwt = prefs.getString('JWT');
       ScanResponseOnNoError scanResponse;

@@ -58,6 +58,7 @@ class _ProfShowActivityState extends State<ProfShowActivity> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenSize().initializeSizes(context);
     return Scaffold(
         body: ValueListenableBuilder(
       valueListenable: isLoadingProfShowScreen,

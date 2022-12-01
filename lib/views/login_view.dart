@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swd_scanner/util.dart';
+import 'package:swd_scanner/view_models/prof_show_activity_view_model.dart';
 import 'package:swd_scanner/views/prof_show_activity.dart';
 import 'package:swd_scanner/views/scanning_view.dart';
 import '../repo/models/login_classes.dart';
@@ -25,14 +26,13 @@ class _LoginViewState extends State<LoginView> {
 
   redirectToScanningScreen() async {
     final prefs = await SharedPreferences.getInstance();
-    ScreenSize().initializeSizes(context);
     print(dotenv.env['PRIVATE_KEY']);
-    if (prefs.getStringList("JWT") != null) {
+    if (prefs.getString("JWT") != null) {
       if (!mounted) {}
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => const ProfShowActivity()));
+              builder: (context) => const ScanningView(showId: 0)));
     }
   }
 
@@ -45,6 +45,7 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenSize().initializeSizes(context);
     return Scaffold(
       body: Center(
         child: ValueListenableBuilder(
@@ -112,7 +113,7 @@ class _LoginViewState extends State<LoginView> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      const ScanningView(showId: 1)));
+                                      const ScanningView(showId: 0)));
                         } on Exception catch (e) {
                           isLoadingLoginScreen.value = false;
                           var snackBar = SnackBar(

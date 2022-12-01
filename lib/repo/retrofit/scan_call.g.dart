@@ -6,11 +6,14 @@ part of 'scan_call.dart';
 // RetrofitGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_brace_in_string_interps
+// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
 class _RestClient implements RestClient {
-  _RestClient(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'https://bitsbosm.org/2022';
+  _RestClient(
+    this._dio, {
+    this.baseUrl,
+  }) {
+    baseUrl ??= 'https://bits-dvm.org/raf/ticket/';
   }
 
   final Dio _dio;
@@ -18,7 +21,10 @@ class _RestClient implements RestClient {
   String? baseUrl;
 
   @override
-  Future<ScanResponseOnNoError> scanQr(jwt, body) async {
+  Future<ScanResponseOnNoError> scanQr(
+    jwt,
+    body,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'Authorization': jwt};
@@ -26,11 +32,18 @@ class _RestClient implements RestClient {
     final _data = <String, dynamic>{};
     _data.addAll(body.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ScanResponseOnNoError>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/tickets-manager/scan',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<ScanResponseOnNoError>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/tickets-manager/scan',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ScanResponseOnNoError.fromJson(_result.data!);
     return value;
   }

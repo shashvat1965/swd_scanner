@@ -6,14 +6,17 @@ part of 'login_api_call.dart';
 // RetrofitGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_brace_in_string_interps
+// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
 class _RestClient implements RestClient {
-  _RestClient(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'https://bitsbosm.org/2022';
+  _RestClient(
+    this._dio, {
+    this.baseUrl,
+  }) {
+    baseUrl ??= 'https://bits-dvm.org/raf/ticket/';
   }
 
-  final Dio.Dio _dio;
+  final Dio _dio;
 
   String? baseUrl;
 
@@ -21,34 +24,34 @@ class _RestClient implements RestClient {
   Future<JWTResponse> getJWT(loginPostRequest) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{
-      r'Content-Type': 'application/json',
-      r'X-Wallet-Token': 'ec123dac-339b-41ba-bca4-d3cab464083d'
-    };
-    _headers.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(loginPostRequest.toJson());
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<JWTResponse>(Dio.Options(
-                method: 'POST',
-                headers: _headers,
-                extra: _extra,
-                contentType: 'application/json')
-            .compose(_dio.options, '/wallet/auth',
-                queryParameters: queryParameters, data: _data)
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<JWTResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'login',
+              queryParameters: queryParameters,
+              data: _data,
+            )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = JWTResponse.fromJson(_result.data!);
     return value;
   }
 
-  Dio.RequestOptions _setStreamType<T>(Dio.RequestOptions requestOptions) {
+  RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
-        !(requestOptions.responseType == Dio.ResponseType.bytes ||
-            requestOptions.responseType == Dio.ResponseType.stream)) {
+        !(requestOptions.responseType == ResponseType.bytes ||
+            requestOptions.responseType == ResponseType.stream)) {
       if (T == String) {
-        requestOptions.responseType = Dio.ResponseType.plain;
+        requestOptions.responseType = ResponseType.plain;
       } else {
-        requestOptions.responseType = Dio.ResponseType.json;
+        requestOptions.responseType = ResponseType.json;
       }
     }
     return requestOptions;
