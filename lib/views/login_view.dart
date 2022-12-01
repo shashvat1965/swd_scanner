@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swd_scanner/util.dart';
-import 'package:swd_scanner/views/scanning_view.dart';
-
+import 'package:swd_scanner/views/prof_show_activity.dart';
 import '../repo/models/login_classes.dart';
 import '../view_models/login_view_view_model.dart';
 
@@ -25,13 +23,12 @@ class _LoginViewState extends State<LoginView> {
 
   redirectToScanningScreen() async {
     final prefs = await SharedPreferences.getInstance();
-    print(dotenv.env['PRIVATE_KEY']);
     if (prefs.getString("JWT") != null) {
       if (!mounted) {}
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => const ScanningView(showId: 0)));
+              builder: (context) => const ProfShowActivity()));
     }
   }
 
@@ -112,7 +109,7 @@ class _LoginViewState extends State<LoginView> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      const ScanningView(showId: 0)));
+                                      const ProfShowActivity()));
                         } on Exception catch (e) {
                           isLoadingLoginScreen.value = false;
                           var snackBar = SnackBar(

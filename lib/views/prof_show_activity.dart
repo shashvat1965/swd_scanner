@@ -27,7 +27,6 @@ class _ProfShowActivityState extends State<ProfShowActivity> {
     super.initState();
     isLoadingProfShowScreen = ValueNotifier(true);
     try {
-      getEventCodes();
       getProfShowsList();
     } catch (e) {
       isLoadingProfShowScreen.value = false;
@@ -49,9 +48,6 @@ class _ProfShowActivityState extends State<ProfShowActivity> {
     });
   }
 
-  getEventCodes() {
-    List<dynamic> tempList = [];
-  }
 
   copyList(List<dynamic> tempList) {
     eventCodes = tempList;

@@ -10,7 +10,7 @@ part 'prof_show_list_call.g.dart';
 abstract class RestClient {
   factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
 
-  @GET("/tickets-manager/shows/manager")
+  @GET("/shows")
   Future<ShowsData> getProfShowList(
     @Header("Authorization") String JWT,
   );

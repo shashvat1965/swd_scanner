@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'views/login_view.dart';
@@ -7,7 +6,6 @@ import 'views/login_view.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
-  dotenv.load(fileName: '.env');
   runApp(const MyApp());
 }
 

@@ -35,7 +35,7 @@ class _RestClient implements RestClient {
     )
             .compose(
               _dio.options,
-              '/tickets-manager/shows/manager',
+              '/shows',
               queryParameters: queryParameters,
               data: _data,
             )
