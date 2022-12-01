@@ -1,13 +1,14 @@
+import 'dart:convert';
 import 'dart:io';
-
 import 'package:dio/dio.dart';
-import 'package:fast_rsa/fast_rsa.dart';
+import 'package:pointycastle/asymmetric/api.dart';
+import 'package:encrypt/encrypt.dart' as enc;
+import 'package:encrypt/encrypt_io.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swd_scanner/views/scan_times_view.dart';
-
 import '../repo/models/scan_classes.dart';
 import '../util.dart';
 import '../view_models/scanning_screen_view_model.dart';
@@ -170,14 +171,35 @@ class _ScanningViewState extends State<ScanningView> {
     controller.scannedDataStream.listen((scanData) async {
       controller.pauseCamera();
       String qrCode = scanData.code!;
-      String decryptedData =
-          await RSA.decryptPKCS1v15(qrCode, dotenv.env['PRIVATE_KEY']!);
+      qrCode = qrCode.replaceAll('\'', "\"");
+      Map<dynamic, dynamic> qrcodeJson = json.decode(qrCode);
+      print(qrcodeJson);
+      final publicKey = await parseKeyFromFile<RSAPublicKey>('test/public.pem');
+      final privKey = await parseKeyFromFile<RSAPrivateKey>('test/private.pem');
+
+
+      //decoding signature and qrcode using Base64
+
+
+
+
+      //decrypting qrcode using RSA and verifying the signature
+
+
+
+
+      // encrypting the qrcode using RSA and creating a new signature
+
+
+
+
+
       final prefs = await SharedPreferences.getInstance();
       String? jwt = prefs.getString('JWT');
       ScanResponseOnNoError scanResponse;
       try {
         scanResponse = await ScanViewModel()
-            .getScan(jwt!, qrCode, widget.showId, strength.toString());
+            .getScan(jwt!, encryptedQRCode, widget.showId, strength.toString());
         print(scanResponse.display_message);
         if (scanResponse.scan_code == 0) {
           if (!mounted) return;
@@ -188,9 +210,9 @@ class _ScanningViewState extends State<ScanningView> {
                   content: const Text("Scanned Successfully"),
                   actions: [
                     ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           Navigator.of(context).pop();
-                          controller.resumeCamera();
+                          await controller.resumeCamera();
                         },
                         child: const Text("ok"))
                   ],
@@ -209,9 +231,9 @@ class _ScanningViewState extends State<ScanningView> {
                     content: const Text("No Net"),
                     actions: [
                       ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             Navigator.of(context).pop();
-                            controller.resumeCamera();
+                            await controller.resumeCamera();
                           },
                           child: const Text("ok")),
                     ],
@@ -227,9 +249,9 @@ class _ScanningViewState extends State<ScanningView> {
                         Text(e.response!.data['display_message'].toString()),
                     actions: [
                       ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             Navigator.of(context).pop();
-                            controller.resumeCamera();
+                            await controller.resumeCamera();
                           },
                           child: const Text("ok")),
                     ],
@@ -272,9 +294,9 @@ class _ScanningViewState extends State<ScanningView> {
                         "${e.response!.statusCode.toString()} : ${e.response!.statusMessage.toString()}"),
                     actions: [
                       ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             Navigator.of(context).pop();
-                            controller.resumeCamera();
+                            await controller.resumeCamera();
                           },
                           child: const Text("ok")),
                     ],
@@ -289,9 +311,9 @@ class _ScanningViewState extends State<ScanningView> {
                   content: Text(e.toString()),
                   actions: [
                     ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           Navigator.of(context).pop();
-                          controller.resumeCamera();
+                          await controller.resumeCamera();
                         },
                         child: const Text("ok")),
                   ],

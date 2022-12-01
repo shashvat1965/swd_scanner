@@ -9,6 +9,8 @@
 .buildlog/
 .history
 .svn/
+keys/privateKey_app.pem
+keys/publicKey_back.pem
 migrate_working_dir/
 
 # IntelliJ related
