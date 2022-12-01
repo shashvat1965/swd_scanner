@@ -1,7 +1,9 @@
-import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart' hide Headers;
+import 'package:retrofit/retrofit.dart';
+
 import '../../constants.dart';
 import '../models/scan_classes.dart';
+
 part 'scan_call.g.dart';
 
 @RestApi(baseUrl: Constants.kBaseUrl)

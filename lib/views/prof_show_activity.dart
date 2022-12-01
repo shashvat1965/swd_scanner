@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swd_scanner/util.dart';
 import 'package:swd_scanner/views/scanning_view.dart';
+
 import '../view_models/prof_show_activity_view_model.dart';
 
 class ProfShowActivity extends StatefulWidget {

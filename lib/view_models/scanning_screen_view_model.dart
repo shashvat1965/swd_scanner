@@ -1,10 +1,7 @@
-import 'dart:convert';
-
-import '../repo/models/qr_to_id_class.dart';
+import 'package:dio/dio.dart';
 
 import '../repo/models/scan_classes.dart';
 import '../repo/retrofit/scan_call.dart';
-import 'package:dio/dio.dart';
 
 class ScanViewModel {
   Future<ScanResponseOnNoError> getScan(

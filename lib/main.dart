@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:swd_scanner/util.dart';
-import 'views/login_view.dart';
 import 'package:get_storage/get_storage.dart';
+
+import 'views/login_view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,10 +14,8 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       initialRoute: '/',
       routes: {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class ScanTimes extends StatefulWidget {
   ScanTimes({Key? key, required this.timeList}) : super(key: key);
   List<dynamic> timeList;
+
   @override
   State<ScanTimes> createState() => _ScanTimesState();
 }

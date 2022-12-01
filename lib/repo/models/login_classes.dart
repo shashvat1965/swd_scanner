@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+
 part 'login_classes.g.dart';
 
 @JsonSerializable()
@@ -13,6 +14,7 @@ class LoginPostRequest {
 
   factory LoginPostRequest.fromJson(Map<String, dynamic> json) =>
       _$LoginPostRequestFromJson(json);
+
   Map<String, dynamic> toJson() => _$LoginPostRequestToJson(this);
 }
 
@@ -26,6 +28,6 @@ class JWTResponse {
 
   factory JWTResponse.fromJson(Map<String, dynamic> json) =>
       _$JWTResponseFromJson(json);
+
   Map<String, dynamic> toJson() => _$JWTResponseToJson(this);
 }
-

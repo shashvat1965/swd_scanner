@@ -1,7 +1,9 @@
-import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
+import 'package:retrofit/retrofit.dart';
+
 import '../../constants.dart';
 import '../models/login_classes.dart';
+
 part 'login_api_call.g.dart';
 
 @RestApi(baseUrl: Constants.kBaseUrl)

@@ -1,6 +1,7 @@
+import 'package:dio/dio.dart';
+
 import '../repo/models/login_classes.dart';
 import '../repo/retrofit/login_api_call.dart';
-import 'package:dio/dio.dart';
 
 class JwtViewModel {
   Future<JWTResponse> getJwt(username, password) async {
