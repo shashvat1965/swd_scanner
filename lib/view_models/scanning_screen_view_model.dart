@@ -5,7 +5,7 @@ import '../repo/retrofit/scan_call.dart';
 
 class ScanViewModel {
   Future<ScanResponseOnNoError> getScan(
-      String jwt, String qrCode, int showId, String quantity) async {
+      String jwt, String qrCode, int showId, String quantity, String signature) async {
     final dio = Dio();
     final client = RestClient(dio);
     ScanResponseOnNoError? scanResponseOnNoError;

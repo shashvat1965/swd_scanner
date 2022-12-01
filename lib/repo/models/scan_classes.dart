@@ -6,12 +6,14 @@ part 'scan_classes.g.dart';
 class ScanPostRequest {
   ScanPostRequest({
     this.qr_code,
+    this.signature,
     this.show_id,
     this.quantity,
   });
 
   String? qr_code;
   int? show_id;
+  String? signature;
   String? quantity;
 
   factory ScanPostRequest.fromJson(Map<String, dynamic> json) =>

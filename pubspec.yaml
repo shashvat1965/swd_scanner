@@ -46,6 +46,7 @@ dependencies:
   flutter_launcher_icons: ^0.10.0
   flutter_dotenv: ^5.0.2
   encrypt: ^5.0.1
+  fast_rsa: ^3.5.1
 
 dev_dependencies:
   flutter_test:
@@ -78,6 +79,8 @@ flutter:
   assets:
     - .env
     - assets/logo.png
+    - keys/publicKey_back.pem
+    - keys/privateKey_app.pem
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
