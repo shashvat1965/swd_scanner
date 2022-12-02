@@ -25,10 +25,8 @@ class _LoginViewState extends State<LoginView> {
     final prefs = await SharedPreferences.getInstance();
     if (prefs.getString("JWT") != null) {
       if (!mounted) {}
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => const ProfShowActivity()));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const ProfShowActivity()));
     }
   }
 

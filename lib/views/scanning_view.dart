@@ -39,7 +39,6 @@ class _ScanningViewState extends State<ScanningView> {
   @override
   Widget build(BuildContext context) {
     ScreenSize().initializeSizes(context);
-    print("showid : ${widget.showId}");
     return Scaffold(
       body: Stack(
         children: [

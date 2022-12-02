@@ -155,15 +155,17 @@ class _ProfShowActivityState extends State<ProfShowActivity> {
                           }
                         },
                       ),
-                      ElevatedButton(onPressed: () async {
-                        final prefs = await SharedPreferences.getInstance();
-                        await prefs.clear();
-                        if (!mounted) {}
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const LoginView()));
-                      }, child: const Text("Logout"))
+                      ElevatedButton(
+                          onPressed: () async {
+                            final prefs = await SharedPreferences.getInstance();
+                            await prefs.clear();
+                            if (!mounted) {}
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const LoginView()));
+                          },
+                          child: const Text("Logout"))
                     ],
                   ),
           );
