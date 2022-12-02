@@ -13,8 +13,9 @@ class JwtViewModel {
     try {
       jwtResponse = await client.getJWT(loginPostRequest);
     } catch (e) {
+      print(e.toString());
       if (e.runtimeType == DioError) {
-        throw Exception((e as DioError).response!.data);
+        throw Exception((e as DioError).response?.data);
       }
     }
     print("*****************");
